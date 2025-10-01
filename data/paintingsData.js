@@ -156,7 +156,7 @@ price: 18000000,
         height: 201,
         unit: "см"
     },
-    price: 0,
+    price: 2660000,
     imageUrl: "https://example.com/images/vityaz.jpg",
     isFeatured: true,
     createdAt: "1882-01-01"
@@ -174,7 +174,7 @@ price: 18000000,
             height: 750,
             unit: "см"
         },
-        price: 0,
+        price: 2322222,
         imageUrl: "https://example.com/images/christ.jpg",
         isFeatured: true,
         createdAt: "1837-01-01"

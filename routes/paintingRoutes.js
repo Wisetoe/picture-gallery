@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const {getPaintings, getPaintingById, getFeatured, getGenre} = require('../controllers/paintingController');
+const validateQueryParams = require('../middleware/validateQueryParams');
 
-router.get('/', getPaintings);
+router.get('/', validateQueryParams ,getPaintings);
 
 router.get('/featured', getFeatured);
 
