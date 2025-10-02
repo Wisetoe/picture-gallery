@@ -1,5 +1,7 @@
 const paintings = require('../data/paintingsData');
 
+const { ERROR_TYPES, sendError } = require('../utils/errors');
+
 const {
     applySearch,
     applyFilters,
@@ -71,11 +73,7 @@ const getPaintings = (req,res) => {
         res.json(response);
     } catch (error) {
         console.error('Ошибка при получении картин:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Внутренняя ошибка сервера',
-            error: error.message
-        });
+        sendError(res, ERROR_TYPES.SERVER_ERROR, 'Не удалось получить список картин');
     }
 };
 
@@ -88,10 +86,7 @@ const getPaintingById = (req,res) => {
         
         // Если картина не найдена, возвращаем ошибку 404
         if (!painting) {
-            return res.status(404).json({
-                success: false,
-                message: 'Картина с таким ID не найдена'
-            });
+            return sendError(res, ERROR_TYPES.NOT_FOUND, `Картина с таким ID ${paintingId} не найдена`);
         }
     
         // Возвращаем найденную картину
@@ -101,13 +96,9 @@ const getPaintingById = (req,res) => {
         });
     } catch (error) {
         // Обработка ошибок сервера
-        res.status(500).json({
-            success: false,
-            message: 'Ошибка при получении картины',
-            error: error.message
-        });
+        console.error(`Ошибка в getpaintingByID`, error);
+        sendError(res, ERROR_TYPES.SERVER_ERROR, 'Не удалось получить данные картины');
     }
-
 };
 
 const getFeatured = (req,res) => {
@@ -120,11 +111,8 @@ const getFeatured = (req,res) => {
             data: result
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Ошибка при получении картин',
-            error: error.message
-        });
+        console.error('Ошибка в getFeatured:', error);
+        sendError(res, ERROR_TYPES.SERVER_ERROR, 'Не удалось получить featured картины');
     }
 };
 
@@ -134,10 +122,7 @@ const getGenre = (req,res) => {
         const painting = paintings.filter(p => p.genre.includes(paintingGenre));
         
         if (!paintings.find(p => p.genre.includes(paintingGenre)) ) {
-            return res.status(404).json({
-                success: false,
-                message: 'Картина с таким жанром не найдена'
-            });
+            return sendError(res, ERROR_TYPES.NOT_FOUND, `Картины в жанре ${genre} не найдены`);
         }
     
         res.json({
@@ -145,11 +130,8 @@ const getGenre = (req,res) => {
             data: painting
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Ошибка при получении картин',
-            error: error.message
-        });
+        console.error('Ошибка в getGenre:', error);
+        sendError(res, ERROR_TYPES.SERVER_ERROR, 'Не удалось отфильтровать картины по жанру');
     }
 };
 
